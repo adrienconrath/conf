@@ -1,26 +1,16 @@
 ################
-# 1. Les alias #
+# 1. Aliases   #
 ################
 
 fpath=(~/.zsh $fpath)
-
-# Gestion du 'ls' : couleur & ne touche pas aux accents
 alias ls='ls -C -G -l --color=auto'
-
-# Gestion du 'grep' : couleur
 alias grep='grep --color=auto'
-
-# Demande confirmation avant d'écraser un fichier
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
-
-# Raccourcis pour 'ls'
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
-
-# Quelques alias pratiques
 alias c='clear'
 alias less='less --quiet'
 alias s='cd ..'
@@ -31,18 +21,9 @@ alias md='mkdir'
 alias rd='rmdir'
 
 #######################################
-# 2. Prompt et définition des touches #
+# 2. Prompt and key binings           #
 #######################################
 
-# Exemple : ma touche HOME, cf  man termcap, est codifiee K1 (upper left
-# key  on keyboard)  dans le  /etc/termcap.  En me  referant a  l'entree
-# correspondant a mon terminal (par exemple 'linux') dans ce fichier, je
-# lis :  K1=\E[1~, c'est la sequence  de caracteres qui sera  envoyee au
-# shell. La commande bindkey dit simplement au shell : a chaque fois que
-# tu rencontres telle sequence de caractere, tu dois faire telle action.
-# La liste des actions est disponible dans "man zshzle".
-
-# Correspondance touches-fonction
 bindkey '^A'    beginning-of-line       # Home
 bindkey '^E'    end-of-line             # End
 bindkey '^D'    delete-char             # Del
@@ -71,10 +52,9 @@ setprompt()
 }
 setprompt
 
-# Console linux, dans un screen ou un rxvt
+# In screen or rxvt
 if [ "$TERM" = "linux" -o "$TERM" = "screen" -o "$TERM" = "rxvt" ]
 then
-  # Correspondance touches-fonction spécifique
   bindkey '[1~' beginning-of-line       # Home
   bindkey '[4~' end-of-line             # End
 fi
@@ -82,7 +62,6 @@ fi
 # xterm
 if [ "$TERM" = "xterm" ]
 then
-  # Correspondance touches-fonction spécifique
   bindkey '[H'  beginning-of-line       # Home
   bindkey '[F'  end-of-line             # End
 fi
@@ -90,19 +69,18 @@ fi
 # gnome-terminal
 if [ "$COLORTERM" = "gnome-terminal" ]
 then
-  # Correspondance touches-fonction spécifique
   bindkey '^[OH'  beginning-of-line       # Home
   bindkey '^[OF'  end-of-line             # End
 fi
 
-# Titre de la fenêtre d'un xterm
+# xterm window title
 case $TERM in
   xterm*)
     precmd () {print -Pn "\e]0;%n@%m: %~\a"}
     ;;
 esac
 
-# Gestion de la couleur pour 'ls' (exportation de LS_COLORS)
+# ls colors
 if [ -x /usr/bin/dircolors ]
 then
   if [ -r ~/.dir_colors ]
@@ -118,130 +96,51 @@ fi
 
 
 ###########################################
-# 3. Options de zsh (cf 'man zshoptions') #
+# 3. zsh options (cf 'man zshoptions')    #
 ###########################################
 
-# Je ne veux JAMAIS de beeps
+# no beeps
 unsetopt beep
 unsetopt hist_beep
 unsetopt list_beep
-# >| doit être utilisés pour pouvoir écraser un fichier déjà existant ;
-# le fichier ne sera pas écrasé avec '>'
+# prevent overriding of files
 unsetopt clobber
-# Ctrl+D est équivalent à 'logout'
+# log out with ^D
 unsetopt ignore_eof
-# Affiche le code de sortie si différent de '0'
+# display exit errors of programs
 setopt print_exit_value
-# Demande confirmation pour 'rm *'
+# ask for confirmation when doing rm *
 unsetopt rm_star_silent
-# Correction orthographique des commandes
-# Désactivé car, contrairement à ce que dit le "man", il essaye de
-# corriger les commandes avant de les hasher
-#setopt correct
-# Si on utilise des jokers dans une liste d'arguments, retire les jokers
-# qui ne correspondent à rien au lieu de donner une erreur
 setopt nullglob
 
-# Schémas de complétion
-
-# - Schéma A :
-# 1ère tabulation : complète jusqu'au bout de la partie commune
-# 2ème tabulation : propose une liste de choix
-# 3ème tabulation : complète avec le 1er item de la liste
-# 4ème tabulation : complète avec le 2ème item de la liste, etc...
-# -> c'est le schéma de complétion par défaut de zsh.
-
-# Schéma B :
-# 1ère tabulation : propose une liste de choix et complète avec le 1er item
-#                   de la liste
-# 2ème tabulation : complète avec le 2ème item de la liste, etc...
-# Si vous voulez ce schéma, décommentez la ligne suivante :
-#setopt menu_complete
-
-# Schéma C :
-# 1ère tabulation : complète jusqu'au bout de la partie commune et
-#                   propose une liste de choix
-# 2ème tabulation : complète avec le 1er item de la liste
-# 3ème tabulation : complète avec le 2ème item de la liste, etc...
-# Ce schéma est le meilleur à mon goût !
-# Si vous voulez ce schéma, décommentez la ligne suivante :
-#unsetopt list_ambiguous
-# (Merci à Youri van Rietschoten de m'avoir donné l'info !)
-
-# Options de complétion
-# Quand le dernier caractère d'une complétion est '/' et que l'on
-# tape 'espace' après, le '/' est effaçé
+# Autocompletion settings
 setopt auto_remove_slash
-# Ne fait pas de complétion sur les fichiers et répertoires cachés
-unsetopt glob_dots
-
-# Traite les liens symboliques comme il faut
 setopt chase_links
-
-# Quand l'utilisateur commence sa commande par '!' pour faire de la
-# complétion historique, il n'exécute pas la commande immédiatement
-# mais il écrit la commande dans le prompt
 setopt hist_verify
-# Si la commande est invalide mais correspond au nom d'un sous-répertoire
-# exécuter 'cd sous-répertoire'
 setopt auto_cd
-# L'exécution de "cd" met le répertoire d'où l'on vient sur la pile
 setopt auto_pushd
-# Ignore les doublons dans la pile
 setopt pushd_ignore_dups
-# N'affiche pas la pile après un "pushd" ou "popd"
 setopt pushd_silent
-# "pushd" sans argument = "pushd $HOME"
 setopt pushd_to_home
 
-# Les jobs qui tournent en tâche de fond sont nicé à '0'
 unsetopt bg_nice
-# N'envoie pas de "HUP" aux jobs qui tourent quand le shell se ferme
 unsetopt hup
 
 
 ###############################################
-# 4. Paramètres de l'historique des commandes #
+# 4. Command history settings                 #
 ###############################################
 
-# Nombre d'entrées dans l'historique
 export HISTORY=1000
 export SAVEHIST=1000
-
-
-
-# Fichier où est stocké l'historique
 export HISTFILE=$HOME/.history
-
-# Ajoute l'historique à la fin de l'ancien fichier
-#setopt append_history
-
-# Chaque ligne est ajoutée dans l'historique à mesure qu'elle est tapée
 setopt inc_append_history
-
-# Ne stocke pas  une ligne dans l'historique si elle  est identique à la
-# précédente
 setopt hist_ignore_dups
-
-# Supprime les  répétitions dans le fichier  d'historique, ne conservant
-# que la dernière occurrence ajoutée
-#setopt hist_ignore_all_dups
-
-# Supprime les  répétitions dans l'historique lorsqu'il  est plein, mais
-# pas avant
 setopt hist_expire_dups_first
-
-# N'enregistre  pas plus d'une fois  une même ligne, quelles  que soient
-# les options fixées pour la session courante
-#setopt hist_save_no_dups
-
-# La recherche dans  l'historique avec l'éditeur de commandes  de zsh ne
-# montre  pas  une même  ligne  plus  d'une fois,  même  si  elle a  été
-# enregistrée
 setopt hist_find_no_dups
 
 ###########################################
-# 5. Complétion des options des commandes #
+# 5. Command options completion           #
 ###########################################
 
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}'
