@@ -14,7 +14,7 @@ set cursorline	" currrent line is highlighted
 set t_Co=16		" Use 16 colors
 set hlsearch	" highlight search matches
 
-# Different color scheme on my mac os versus somewhere else
+" Different color scheme on my mac os versus somewhere else
 if system('uname') == "Darwin\n"
     colorscheme mustang
 else
