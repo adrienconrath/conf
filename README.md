@@ -18,7 +18,6 @@ To uninstall:
 * Create a session: mksession <name> (SessionManager)
 * Restart a session: vim -S <name> (SessionManager)
 * Open NERDTree: "j" (NerdTream)
-* Open recent file: <space> f (FuzzyFinder)
 * Cycle through autocompletion options with <tab> (supertab)
 * :SCROLL to change colorscheme (scrollcolor)
 * Select inside or outside surrounding (): vi(, vib, vab, ... (surround)
