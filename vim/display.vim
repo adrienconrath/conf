@@ -13,7 +13,15 @@ set showmode
 set cursorline	" currrent line is highlighted
 set t_Co=16		" Use 16 colors
 set hlsearch	" highlight search matches
-colorscheme mustang
+
+# Different color scheme on my mac os versus somewhere else
+if system('uname') == "Darwin\n"
+    colorscheme mustang
+else
+    colorscheme twilight
+endif
+
+
 " Show the cursor position
 set ruler
 " Show line numbers
