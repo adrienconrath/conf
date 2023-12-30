@@ -35,6 +35,3 @@ To uninstall:
 * Switch indent style with :IndentStyle (indentation.vim)
 * -- to disable highlighting after a search
 * <space>-<up>/<down>/<left>/<right> to move between windows
-
-TODO
-* Change colorscheme if on raspberry pi
