@@ -32,25 +32,35 @@ bindkey '[2~' overwrite-mode          # Insert
 bindkey '[5~' history-search-backward # PgUp
 bindkey '[6~' history-search-forward  # PgDn
 
-setprompt()
-{
-  CL_NORMAL='%{[0m%}'	# %{[0m%} = normal
-  CL_GREY='%{[0;30m%}'	# %{[0;30m%} = grey
-  CL_RED='%{[0;31m%}'	# %{[0;31m%} = red
-  CL_GREEN='%{[0;32m%}'	# %{[0;32m%} = green
-  CL_YELLOW='%{[0;33m%}'	# %{[0;33m%} = yellow
-  CL_BLUE='%{[0;34m%}'	# %{[0;34m%} = blue
-  CL_VIOLET='%{[0;35m%}'	# %{[0;35m%} = violet
-  CL_CYAN='%{[0;36m%}'	# %{[0;36m%} = cyan
-  CL_SPECIAL='%{[1;30m%}'	# %{[1;30m%} = bold grey
-  PR_USER="[${CL_GREY}%n${CL_NORMAL} @"
-  PR_HOST=" ${CL_YELLOW}%m${CL_NORMAL}] %# "
-  PR_USER="${CL_CYAN}%n${CL_NORMAL}"
-  PR_HOST=" ${CL_YELLOW}%m${CL_NORMAL} %# "
-  PROMPT="${PR_USER}${PR_HOST}"
-  RPROMPT="%(?..[$CL_VIOLET%B%?%b]) [${CL_RED}%~${CL_NORMAL}]"
+autoload -Uz vcs_info
+precmd_vcs_info() {
+    vcs_info
+    if [[ -z ${vcs_info_msg_0_} ]]; then
+        vcs_info_msg_0_=''
+    fi
 }
-setprompt
+precmd_functions=()
+precmd_functions+=(precmd_vcs_info)
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats ' [%b]'
+
+setopt PROMPT_SUBST
+
+CL_NORMAL='%{[0m%}'	# %{[0m%} = normal
+CL_GREY='%{[0;30m%}'	# %{[0;30m%} = grey
+CL_RED='%{[0;31m%}'	# %{[0;31m%} = red
+CL_GREEN='%{[0;32m%}'	# %{[0;32m%} = green
+CL_YELLOW='%{[0;33m%}'	# %{[0;33m%} = yellow
+CL_BLUE='%{[0;34m%}'	# %{[0;34m%} = blue
+CL_VIOLET='%{[0;35m%}'	# %{[0;35m%} = violet
+CL_CYAN='%{[0;36m%}'	# %{[0;36m%} = cyan
+CL_SPECIAL='%{[1;30m%}'	# %{[1;30m%} = bold grey
+PR_USER="[${CL_GREY}%n${CL_NORMAL} @"
+PR_HOST=" ${CL_YELLOW}%m${CL_NORMAL}] %# "
+PR_USER="${CL_CYAN}%n${CL_NORMAL}"
+PR_HOST=" ${CL_YELLOW}%m${CL_NORMAL} %# "
+PROMPT="${PR_USER}${PR_HOST}"
+RPROMPT="%(?..[$CL_VIOLET%B%?%b]) [${CL_RED}%~${CL_NORMAL}]\${vcs_info_msg_0_}"
 
 # In screen or rxvt
 if [ "$TERM" = "linux" -o "$TERM" = "screen" -o "$TERM" = "rxvt" ]
@@ -158,7 +168,6 @@ export PAGER=less
 
 umask 066
 alias l='ls -l -H'
-alias z='zlock -immed'
 alias c='clear'
 alias less='less --quiet'
 alias s='cd ..'
@@ -167,8 +176,6 @@ alias du='du -h'
 alias m='mutt -y'
 alias md='mkdir'
 alias rd='rmdir'
-alias top='htop'
-alias gccmul='gcc -W -Wall -Werror -g '
 alias tree='tree -C'
 
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
@@ -179,10 +186,21 @@ export LESS_TERMCAP_so=$'\E[38;5;246m'    # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
-alias valgrind='valgrind -v --time-stamp=yes --leak-check=full --show-reachable=yes --track-fds=yes --track-origins=yes --malloc-fill=42 --free-fill=42'
 alias v=vim
 
 export FULLNAME="Adrien CONRATH"
 export EMAIL="adrienconrath@gmail.com"
 
-alias sshx='ssh -c arcfour,blowfish-cbc -XC'
+###########################################
+# 6. Other things                         #
+###########################################
+
+# Vim bindings
+set -o vi
+
+# Source a second config file in case I want some stuff to not be committed
+if [[ -f ~/.zshrc-2 ]]; then
+    source ~/.zshrc-2
+fi
+
+
