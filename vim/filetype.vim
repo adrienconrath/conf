@@ -1,5 +1,4 @@
 "
-" EPITA filetype. including sparc and mips assembly, as well as tiger
 augroup filetypedetect
     au BufNewFile,BufRead *.c                     	setf c
     au BufNewFile,BufRead *.hcc 			set filetype=cpp
@@ -25,6 +24,3 @@ augroup Binary
 augroup END
 au BufNewFile,BufRead *todo,*TODO		set ft=wtodo
 au BufNewFile,BufRead NOTES			set ft=notes
-autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-autocmd BufRead *.tex set makeprg=texi2pdf\ '%'
-

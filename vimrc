@@ -14,7 +14,6 @@ source ~/.vim/statusline.vim
 source ~/.vim/sudo.vim
 source ~/.vim/syntax.vim
 source ~/.vim/tabs.vim
-source ~/.vim/tags.vim
 source ~/.vim/textwidth.vim
 source ~/.vim/windows.vim
 source ~/.vim/yank.vim
