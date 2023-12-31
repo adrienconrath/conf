@@ -199,8 +199,8 @@ export EMAIL="adrienconrath@gmail.com"
 set -o vi
 
 # Source a second config file in case I want some stuff to not be committed
-if [[ -f ~/.zshrc-2 ]]; then
-    source ~/.zshrc-2
+if [[ -f $HOME/.zshrc-2 ]]; then
+    source $HOME/.zshrc-2
 fi
 
 
