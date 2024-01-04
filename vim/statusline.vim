@@ -5,6 +5,7 @@
 " Status line
 set statusline=%r%m%n:%f
 set statusline+=%=
+set statusline+=%{FugitiveStatusline()}
 set statusline+=%#warningmsg#
 set statusline+=%{StatuslineTrailingSpaceWarning()}
 set statusline+=%{StatuslineLongLineWarning()}

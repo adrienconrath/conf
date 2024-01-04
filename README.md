@@ -34,3 +34,6 @@ To uninstall:
 * Switch indent style with :IndentStyle (indentation.vim)
 * -- to disable highlighting after a search
 * <space>-<up>/<down>/<left>/<right> to move between windows
+* Add ALE for linters and fixers
+* Add vim-fugitive. Run :Git <command> like :Git blame
+* :Gdiffsplit to compare working tree version with staged version
